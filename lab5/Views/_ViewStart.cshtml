@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@using Microsoft.AspNetCore.Identity
+@using lab5.Areas.Identity.Data
+@inject SignInManager<lab5User> SignInManager
+@inject UserManager<lab5User> UserManager
+@if (SignInManager.IsSignedIn(User))
+{
+    lab5User user = await UserManager.GetUserAsync(User);
+    if (user.IsBlocked)
+    {
+        await SignInManager.SignOutAsync();
+    }
+}

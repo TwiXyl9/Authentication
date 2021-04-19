@@ -1,0 +1,59 @@
+﻿@model IEnumerable<lab5User>
+@{ ViewBag.Title = "Список пользователей"; }
+
+@using Microsoft.AspNetCore.Identity
+@using lab5.Areas.Identity.Data
+
+@inject SignInManager<lab5User> SignInManager
+@inject UserManager<lab5User> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    lab5User titleUser = UserManager.Users.First();
+    <form>
+        <button asp-controller="Home" asp-action="Block" class="btn btn-primary">Block</button>
+        <button asp-controller="Home" asp-action="UnBlock" class="btn btn-primary">UnBlock</button>
+        <button asp-controller="Home" asp-action="Delete" class="btn btn-primary">Delete</button>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">
+                        <input type="checkbox" id="CheckAll" />
+                    </th>
+                    <th scope="col">@Html.DisplayNameFor(t => titleUser.UserName)</th>
+                    <th scope="col">@Html.DisplayNameFor(t => titleUser.Email)</th>
+                    <th scope="col">@Html.DisplayNameFor(t => titleUser.LastLogin_date)</th>
+                    <th scope="col">@Html.DisplayNameFor(t => titleUser.Registration_date)</th>
+                    <th scope="col">@Html.DisplayNameFor(t => titleUser.IsBlocked)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td scope="col">
+                            <input type="checkbox" name="checkUser" id="simple_check" value="@user.Id" />
+                        </td>
+                        <td scope="col">@Html.DisplayFor(m => user.UserName)</td>
+                        <td scope="col">@Html.DisplayFor(m => user.Email)</td>
+                        <td scope="col">@Html.DisplayFor(m => user.LastLogin_date)</td>
+                        <td scope="col">@Html.DisplayFor(m => user.Registration_date)</td>
+                        <td scope="col">@Html.DisplayFor(m => user.IsBlocked)</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </form>
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+}
+
+
