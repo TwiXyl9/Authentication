@@ -83,6 +83,9 @@ namespace lab5.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    user.LastLogin_date = DateTime.Now.ToString();
+                    await _userManager.UpdateAsync(user);
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
